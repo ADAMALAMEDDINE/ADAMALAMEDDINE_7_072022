@@ -9,13 +9,25 @@ export default {
         console.log(token, user_id);
         const result = await axios({
             headers: {
-                'Authorization': `Bearer ${token}` 
-              },
+                'Authorization': `Bearer ${token}`
+            },
             method: 'put',
             url: BACKEND_URL + "/posts/create",
             data: {
                 title, content, user_id
             }
+        });
+        return result;
+    },
+    async getAll() {
+
+        const { token } = storage.getAll()
+        const result = await axios({
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            method: 'get',
+            url: BACKEND_URL + "/posts"
         });
         return result;
     },

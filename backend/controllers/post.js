@@ -9,7 +9,7 @@ const User = DB.User
 
 exports.getAllPosts = (req, res) => {
 Post.findAll({paranoid: false})
-        .then(posts => res.json({ data: posts }))
+        .then(posts => res.json( posts ))
         .catch(err => res.status(500).json({ message: 'Database Error', error: err }))
 }
 
