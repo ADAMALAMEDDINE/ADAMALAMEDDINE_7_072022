@@ -1,5 +1,5 @@
 import './Header.css';
-import logo from "../../logo.svg"
+import logo from "../../images/icon-left-font-monochrome-black.png"
 import { Link } from "react-router-dom";
 
 
