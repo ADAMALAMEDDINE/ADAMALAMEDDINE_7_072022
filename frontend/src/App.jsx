@@ -4,6 +4,10 @@ import { useState } from "react" //fonction qui permet de recuperer des "state"
 import userService from './services/userService';
 import storage from './services/storage';
 import { useNavigate } from "react-router-dom";
+import logo from "./images/icon-left-font-monochrome-black.png"
+
+
+
 
 
 
@@ -61,6 +65,7 @@ function App() {
   return (
     <div className="App">
       <h1>GROUPOMANIA</h1>
+      <img src={logo} alt='logo Groupomania' />
       {displayLogin ?
         <form>
           <input name="email" onChange={loginFormFieldChange} value={loginFormData.email} type="email" placeholder="email" />

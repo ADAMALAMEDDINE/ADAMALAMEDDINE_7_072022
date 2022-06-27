@@ -1,6 +1,7 @@
 import './Home.css';
 import { useState, useEffect } from "react" //fonction qui permet de recuperer des "state", useEffect permet de charger les postes avec l'ensembles
 import Header from '../../components/Header/Header';
+import logo from "../../images/icon-left-font-monochrome-black.png"
 import postsService from '../../services/postService';
 
 
