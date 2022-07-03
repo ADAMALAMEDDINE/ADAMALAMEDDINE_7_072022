@@ -37,6 +37,10 @@ module.exports = (sequelize) => {
         password:{
             type: DataTypes.STRING(64),
             is: /^[0-9a-f]{64}$/i    // Ici une contrainte
+        },
+        role: {
+            type: DataTypes.STRING(10),
+            defaultValue: 'user',
         }
     }, { paranoid: true })           // Ici pour faire du softDelete
     

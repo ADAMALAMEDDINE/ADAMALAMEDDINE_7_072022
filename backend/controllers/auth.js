@@ -30,16 +30,16 @@ exports.login = async (req, res) => {
         if(!test){
             return res.status(403).json({ message: 'Wrong password'})
         }
-
         // Génération du token et envoi
         const token = jwt.sign({
             id: user.id,
             lastname: user.lastname,
             firstname: user.firstname,
-            email: user.email
+            email: user.email,
+            role: user.role
         }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_DURING})
         
-        return res.json({token, user_id: user.id})
+        return res.json({token, user_id: user.id, user_role: user.role})
     }catch(err){
         if(err.name == 'SequelizeDatabaseError'){
             res.status(500).json({ message: 'Database Error', error: err })
@@ -49,17 +49,21 @@ exports.login = async (req, res) => {
 }
 
 exports.signup = async (req, res) => {
-    const { firstname, lastname, nickname, email, password } = req.body
-console.log(firstname,"coucou");
+    const { firstname, lastname, nickname, email, password } = req.body;
     // Validation des données reçues
     if(!firstname || !lastname || !nickname || !email || !password){
         return res.status(400).json({ message: 'Missing user informations'})
     }
 
+    let role = "user";
+    if(firstname === process.env.USER_ADMIN_FIRSTNAME) (
+        role = "admin"
+    )
+
     try{
         //création du User
 
-       const user = await User.create(req.body)
+       const user = await User.create({...req.body, role})
         return res.json({ message: 'User Created', data: user })
     }catch(err){
         return res.status(500).json({ message: 'Database Error', error: err })

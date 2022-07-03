@@ -31,8 +31,8 @@ function NewPost() {
   return (
     <div className="NewPost">
       <Header />
-      <h1>Crée un nouvel article</h1>
-      <form onSubmit={createNewPost} >
+      <form onSubmit={createNewPost}>
+        <h1>Nouvel article</h1>
         <input name="title" onChange={newPostFormFieldChange} value={newPostFormData.title} type="text" placeholder="titre de l'article" />
         <textarea name="content" onChange={newPostFormFieldChange} value={newPostFormData.content} placeholder="contenu" />
         <input type="submit" value="Publier" />

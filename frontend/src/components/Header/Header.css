@@ -1,4 +1,30 @@
-ul {
+header {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
 
-    text-decoration: none;
+header img {
+    width: 200px;
+    height: 85px;
+    object-fit: cover;
+}
+
+header ul {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding-left: 0;
+}
+
+header li {
+    padding: 28px 10px;
+    border-top: 2px solid transparent;
+    align-self: stretch;
+}
+
+li.header-nav-menu-item:hover {
+    transition: border-color 1s ease-in-out;
+    border-color: black;
 }

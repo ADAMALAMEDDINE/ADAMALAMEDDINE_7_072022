@@ -1,10 +1,10 @@
 import { STORAGE_NAME } from "../global"
 
-export default {
+const storageService = {
 
     init(data) {
-        const {user_id, token} = data;
-        localStorage[STORAGE_NAME] = JSON.stringify({user_id, token})
+        const {user_id, token, user_role} = data;
+        localStorage[STORAGE_NAME] = JSON.stringify({user_id, token, user_role})
     },
     get(key) {
         const storData = localStorage[STORAGE_NAME];
@@ -30,5 +30,10 @@ export default {
         } else {
             return JSON.parse(storData);
         }
+    },
+    clean() {
+        localStorage[STORAGE_NAME] = null;
     }
-} 
+};
+
+export default storageService;

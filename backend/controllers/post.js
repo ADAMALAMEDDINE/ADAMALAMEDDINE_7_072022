@@ -8,7 +8,13 @@ const User = DB.User
 /*** Routage de la ressource Post */
 
 exports.getAllPosts = (req, res) => {
-Post.findAll({paranoid: false})
+Post.findAll({
+    paranoid: false, 
+    order: [['createdAt', 'DESC']],
+    include: [ { model: User, attributes: ["nickname"]} ],
+    attributes: ["title", "content", "updatedAt", "user_id", "id"]
+
+})
         .then(posts => res.json( posts ))
         .catch(err => res.status(500).json({ message: 'Database Error', error: err }))
 }

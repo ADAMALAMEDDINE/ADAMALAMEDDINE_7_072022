@@ -1,5 +1,5 @@
 import './PostDetails.css';
-import { useState } from "react" //fonction qui permet de recuperer des "state"
+// import { useState } from "react" //fonction qui permet de recuperer des "state"
 
 function PostDetails() {
   

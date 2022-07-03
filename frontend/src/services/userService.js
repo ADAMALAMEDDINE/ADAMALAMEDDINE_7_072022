@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { BACKEND_URL } from '../global';
+import storage from './storage';
 
-export default {
+const userService = {
     async signUp({ firstname, lastname, nickname, email, password }) {
         const result = await axios({
             method: 'post',
@@ -21,9 +22,11 @@ export default {
             }
         });
         return result;
+    },
+    disconnect() {
+        storage.clean();
     }
 }
 
-/*headers: {
-    'Authorization': `Basic ${token}` 
-  }*/
+export default userService;
+
