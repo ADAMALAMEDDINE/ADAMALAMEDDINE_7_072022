@@ -1,0 +1,45 @@
+.PostDetails .go-back-link {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+}
+
+.PostDetails h1 {
+    text-align: center;
+}
+
+.PostDetails .post-infos-top {
+    text-align: center;
+    font-style: italic;
+    margin-top: -10px;
+}
+
+.PostDetails .img-ctnr {
+    float: left;
+    text-align: center;
+}
+
+.PostDetails img {
+    margin: 10px;    
+    width: 200px;
+    height: 220px;
+    background-color: var(--light-grey);
+}
+
+.post-infos-bottom {
+    padding: 10px;
+}
+
+.PostDetails .post-infos {
+    background-color: white;
+    box-shadow: 1px 1px 4px silver;
+    width: 90%;
+    margin: auto;
+}
+
+.PostDetails .post-content {
+    padding: 15px;
+    min-height: 300px;
+}
+
+

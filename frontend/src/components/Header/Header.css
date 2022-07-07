@@ -22,9 +22,14 @@ header li {
     padding: 28px 10px;
     border-top: 2px solid transparent;
     align-self: stretch;
+    display: flex;
+}
+header a {
+    display: flex;
+    align-items: center;
 }
 
-li.header-nav-menu-item:hover {
-    transition: border-color 1s ease-in-out;
-    border-color: black;
+header li:hover a {
+    transition: color 0.3s ease-in-out;
+    color: white;
 }

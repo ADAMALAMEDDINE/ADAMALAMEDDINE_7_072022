@@ -1,28 +1,41 @@
 import './Home.css';
+import logo from "../../images/icon-left-font.png";
 import { useState, useEffect } from "react" //fonction qui permet de recuperer des "state", useEffect permet de charger les postes avec l'ensembles
+import { Link } from 'react-router-dom';
+
 import Header from '../../components/Header/Header';
+import PostForm from '../../components/PostForm/postForm';
 import postsService from '../../services/postService';
 import storage from '../../services/storage';
+import { __formatDateTime } from '../../services/utils';
+import LikeDislikeButtons from '../../components/LikeDislikeButtonsn/LikeDislikeButtons';
 
 
 
 function Home() {
 
   const [posts, setPosts] = useState([]);
+  const [displayPostForm, setDisplayPostForm] = useState(false);
+  const [postToEdit, setPostToEdit] = useState(null);
+
   const {user_id, user_role} = storage.getAll();
   useEffect(() => {
     postsService.getAll()
       .then((res) => {
-        console.log(res);
-        setPosts(res.data)
+        const posts = res.data.map(post => {
+          if(post.content.length >= 150) post.content += "...";
+          post.updatedAt = __formatDateTime(post.updatedAt);
+          return post;
+        })
+        setPosts(posts)
       })
   }, [])
 
 
-  /*const toggleDisplayLogin = (e) => {
-    e.preventDefault()
-    setDisplayLogin(!displayLogin)
-  }*/
+  const openPostForm = (post) => {
+    setPostToEdit(post);
+    setDisplayPostForm(true);
+  }
 
   const deletePost = (postId, index) => {
     postsService.delete(postId);
@@ -32,33 +45,71 @@ function Home() {
   }
 
   const updatePost = (post, index) => {
-
+    openPostForm({...post, index});
   }
 
+  const postWasUpdated = (post) => {
+    const posts_ = [...posts];
+    posts_[post.index] = {
+      ...posts_[post.index],
+      title: post.title,
+      content: post.content.slice(0, 150)+"...",
+      imageUrl: post.imageUrl
+    };
+    setDisplayPostForm(false);
+    setPosts(posts_);
+  }
+
+  const postWasCreated = newPost => {
+    const posts_ = [...posts];
+    newPost.updatedAt = __formatDateTime(newPost.updatedAt); 
+    newPost.content = newPost.content.slice(0, 150)+"..."
+    posts_.splice(0, 0, newPost);
+    setDisplayPostForm(false);
+    setPosts(posts_);
+  }
 
   return (
     <div className="Home">
-      <Header />
-      <h1>Voir les dernières publications</h1>
+      <Header postWasCreated={postWasCreated}/>
+      {!posts || posts.length === 0 ?<h1>Aucune publication pour le moment ...</h1> : <h1>Voir les dernières publications</h1>}
+      
       <ul>
         {posts.map((post, index) => (
-          <li key={index}>
-            { ( user_role === "admin" || post.user_id === user_id) && 
-              <div className="post-author-buttons">
-                <button onClick={() => {deletePost(post.id, index)}}>Supprimer</button>
-                <button onClick={() => {updatePost(post, index)}}>Modifier</button>
+          <li key={index} className="post-item">
+            <Link className="post-item-top" to={{
+              pathname: "/article-details/" + post.id,
+            }}>
+              <div className='post-item-left'>
+                <img src={post.imageUrl || logo} alt="" />
               </div>
-            }
-           
-            
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-            <p className="post-author">Posté par {post.User.nickname}, le {post.updatedAt}</p>
+              <div className="post-item-right">
+                <h2>{post.title}</h2>
+                <p className="post-item-infos">Posté par {post.User.nickname}, le {post.updatedAt}</p>
+                <p className='post-item-content'>{post.content}</p>
+              </div>  
+            </Link>
+            <div className="post-item-bottom">
+              <LikeDislikeButtons post={post}/>
+              { ( user_role === "admin" || post.user_id === user_id) && 
+                <div className="post-author-buttons">
+                  <button onClick={() => {deletePost(post.id, index)}}>Supprimer</button>
+                  <button onClick={() => {updatePost(post, index)}}>Modifier</button>
+                </div>
+              }
+            </div>
           </li>
         ))
         }
       </ul>
-
+      
+      {
+        displayPostForm && 
+        <PostForm 
+        post={postToEdit}
+        closeSelf={()=>{setDisplayPostForm(false)}}
+        postWasUpdated={postWasUpdated}/>
+      }
     </div>
   );
 }

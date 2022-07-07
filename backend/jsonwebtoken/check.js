@@ -16,7 +16,7 @@ const extractBearer = authorization => {
 
 //// Verification de la presence du token
 const checkTokenMiddleware = (req, res, next) => {
-    console.log(req.headers.authorization);
+    // console.log(req.headers.authorization);
     const token = req.headers.authorization && extractBearer(req.headers.authorization)
     if(!token){
         return res.status(401).json({message: 'le petit malin'})
@@ -30,5 +30,6 @@ const checkTokenMiddleware = (req, res, next) => {
         next()
     })
 }
+
 
 module.exports = checkTokenMiddleware

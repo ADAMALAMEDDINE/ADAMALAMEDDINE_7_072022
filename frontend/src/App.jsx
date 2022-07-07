@@ -1,10 +1,8 @@
-/*import logo from './logo.svg';*/
 import './App.css';
 import { useState } from "react" //fonction qui permet de recuperer des "state"
 import userService from './services/userService';
 import storage from './services/storage';
 import { useNavigate } from "react-router-dom";
-import logo from "./images/icon-left-font-monochrome-black.png"
 
 
 function App() {
@@ -66,15 +64,15 @@ function App() {
 
   return (
     <div className="App">
-      <h1>GROUPOMANIA</h1>
-      <img src={logo} alt='logo Groupomania' />
       {displayLogin ?
         <form>
+          <h1>Connexion</h1>
           <input name="email" onChange={loginFormFieldChange} value={loginFormData.email} type="email" placeholder="email" />
           <input name="password" onChange={loginFormFieldChange} value={loginFormData.password} type="password" placeholder="mot de passe" />
           <input onClick={onlogin} type="submit" value="Se connecter" />
           <button onClick={toggleDisplayLogin}>Pas encore inscrit ?</button>
         </form> : <form>
+          <h1>Inscription</h1>
           <input name="email" onChange={signUpFormFieldChange} value={signUpFormData.email} type="email" placeholder="email" />
           <input name="nickname" onChange={signUpFormFieldChange} value={signUpFormData.nickname} type="text" placeholder="votre pseudo" />
           <input name="password" onChange={signUpFormFieldChange} value={signUpFormData.password} type="password" placeholder="mot de passe" />
@@ -89,5 +87,8 @@ function App() {
     </div>
   );
 }
+
+
+
 
 export default App;

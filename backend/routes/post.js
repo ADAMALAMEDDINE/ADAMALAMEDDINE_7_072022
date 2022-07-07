@@ -1,9 +1,11 @@
 /***********************************/
 /*** Import des module nécessaires */
-const express = require('express')
-const checkTokenMiddleware = require('../jsonwebtoken/check')
-const postCtrl = require('../controllers/post')
-
+const express = require('express');
+const checkTokenMiddleware = require('../jsonwebtoken/check');
+const postCtrl = require('../controllers/post');
+const multer = require('../middleware/multer-config');
+// let multer = require('multer');
+// let upload = multer();
 /***************************************/
 /*** Récupération du routeur d'express */
 let router = express.Router()
@@ -21,11 +23,13 @@ router.use( (req, res, next) => {
 
 router.get('', postCtrl.getAllPosts)
 
-router.get('/:id', postCtrl.getPost)
+router.get('/get-one/:id', postCtrl.getOne)
 
-router.put('/create', checkTokenMiddleware, postCtrl.addPost)
+router.get('/get-content/:id', postCtrl.getContent)
 
-router.patch('/:id', checkTokenMiddleware, postCtrl.updatePost)
+router.put('/create', checkTokenMiddleware, multer, postCtrl.addPost)
+
+router.post('/:id', checkTokenMiddleware, multer, postCtrl.updatePost)
 
 router.post('/untrash/:id', checkTokenMiddleware, postCtrl.untrashPost)
     

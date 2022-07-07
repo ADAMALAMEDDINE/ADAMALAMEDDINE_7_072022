@@ -25,7 +25,20 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             defaultValue: '',
             allowNull: false,
+        },
+        likes:{
+            type: DataTypes.INTEGER(10),
+            defaultValue: 0
+        },
+        dislikes:{
+            type: DataTypes.INTEGER(10),
+            defaultValue: 0
+        },
+        imageUrl:{
+            type: DataTypes.STRING(100),
+            defaultValue: ""
         }
+        
     }, { paranoid: true })           // Ici pour faire du softDelete
 }
 

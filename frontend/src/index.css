@@ -5,9 +5,72 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+  background: linear-gradient(#FD2D01, #FFD7D7);
+  min-height: 100vh;
+  width: 100%;
+  color: black;
+  }
+  
+  a {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  form {
+    width: 96%;
+    min-width: 280px;
+    max-width: 600px;
+    box-shadow: 1px 1Px 4px black;
+    background-color: white;
+    border-radius: 3px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  form input, form textarea {
+    height: 25px;
+    box-shadow: 1px 1px 4px silver;
+    border-style: none;
+    background-color: #f8f8f8;
+    width: 90%;
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 4px;
+  }
+  
+  form textarea {
+    min-height: 100px;
+  }
+  
+  button, input[type="submit"] {
+    cursor: pointer;
+      background-color: transparent;
+      border: 1px solid black;
+      border-radius: 15px;
+      height: 30px;
+      padding: 4px 10px;
+  }
+  
+  button:hover, input[type="submit"]:hover {
+      transition: background-color 0.3s ease-out
+      , color 0.3s ease-in;
+      background-color: black;
+      color: white;
+  }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+  img {
+    object-fit: cover;  
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  :root {
+    --light-grey: #d4bebe;
+  }
+  

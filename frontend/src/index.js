@@ -9,8 +9,8 @@ import {
   Route,
 } from "react-router-dom";
 import Home from './pages/Home/Home';
-import NewPost from './pages/NewPost/NewPost';
 import PostDetails from './pages/PostDetails/PostDetails';
+import Profil from './pages/Profil/Profil';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,8 +19,8 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="accueil" element={<Home />} />
-      <Route path="nouvel-article" element={<NewPost />} />
-      <Route path="article-detail/:postid" element={<PostDetails />} />
+      <Route path="article-details/:postid" element={<PostDetails />} />
+      <Route path="mon-profil" element={<Profil />} />
     </Routes>
   </BrowserRouter>
   </React.StrictMode>

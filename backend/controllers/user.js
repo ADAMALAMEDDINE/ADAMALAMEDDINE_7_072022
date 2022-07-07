@@ -30,10 +30,10 @@ exports.getUser = (req, res) => {
 }
 
 exports.addUser = (req, res) => {
-    const { nom, prenom, pseudo, email, password } = req.body
+    const { nom, prenom, nickname, email, password } = req.body
 
     //validation des données reçues
-    if (!nom || !prenom || !email || !pseudo) {
+    if (!nom || !prenom || !email || !nickname) {
         return res.status(400).json({ message: "missing data" })
     }
 
