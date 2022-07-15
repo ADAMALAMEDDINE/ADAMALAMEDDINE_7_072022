@@ -1,6 +1,5 @@
 //***********************************/
 /*** Import des module nécessaires */
-const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const DB = require('../db.config')
@@ -35,7 +34,8 @@ exports.login = async (req, res) => {
             id: user.id,
             lastname: user.lastname,
             firstname: user.firstname,
-            email: user.email,
+            email: maskEmail(email),
+            nickname: user.nickname,
             role: user.role
         }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_DURING})
         
@@ -60,12 +60,33 @@ exports.signup = async (req, res) => {
         role = "admin"
     )
 
+    password = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND));
+
+
     try{
         //création du User
 
-       const user = await User.create({...req.body, role})
+       const user = await User.create({ firstname, lastname, nickname, email, password, role })
         return res.json({ message: 'User Created', data: user })
     }catch(err){
         return res.status(500).json({ message: 'Database Error', error: err })
     }
 }
+
+const maskEmail = emailStr => {
+    const splitedEmail = emailStr.split("@");
+    return obfuscate(splitedEmail[0]) + '@' + obfuscate(splitedEmail[1]);
+
+};
+
+const obfuscate = str => {
+    let obfuscated = "";
+    for(let i = 0, l =  str.length; i < l; i++) {
+        if(i < str.length / 2) {
+            obfuscated += "*";
+        } else {
+            obfuscated += str[i];
+        }
+    }
+    return obfuscated;
+};

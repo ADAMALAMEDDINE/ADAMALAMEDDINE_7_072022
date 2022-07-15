@@ -1,6 +1,7 @@
 export const __formatDateTime = dateTimeStr => {
-    const parts = dateTimeStr.split("T");
-    return parts[0].split('-').reverse().join('-') + " à " + parts[1].split('.')[0];
+    // dateTimeStr ressemble à : "aaaa-mm-jjThh:mm:ss.000Z"
+    const parts = dateTimeStr.split("T"); // on split la date en 2
+    return parts[0].split('-').reverse().join('/') + " à " + parts[1].split('.')[0];
 }
 
 // source : https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript-without-using-a-library

@@ -35,7 +35,7 @@ db.Dislike.belongsTo(db.Post, {foreignKey: 'post_id', onDelete: 'cascade'});
 // sequelize.sync(err => {
 //     console.log('Database Sync Error', err)
 // })
-db.sequelize.sync({force:true});
+db.sequelize.sync();
 //
 
 module.exports = db

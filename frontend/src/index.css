@@ -44,6 +44,24 @@ body {
   form textarea {
     min-height: 100px;
   }
+
+  form label {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 4px 0 4px;
+  }
+
+  form .invalid-feild-msg {
+    color: red;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 4px;
+    font-style: italic;
+    font-size: 14px;
+
+}
   
   button, input[type="submit"] {
     cursor: pointer;

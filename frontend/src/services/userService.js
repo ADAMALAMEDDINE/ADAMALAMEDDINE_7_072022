@@ -23,6 +23,15 @@ const userService = {
         });
         return result;
     },
+    async updateProfile(formData) {
+        const { token, user_id } = storage.getAll();
+        const result = await axios.patch(
+            BACKEND_URL + "/users/" + user_id, 
+            formData, 
+            { headers: {'Authorization': `Bearer ${token}`} }
+        );
+        return result;
+    },
     disconnect() {
         storage.clean();
     }

@@ -37,8 +37,13 @@ function Home() {
     setDisplayPostForm(true);
   }
 
-  const deletePost = (postId, index) => {
-    postsService.delete(postId);
+  const deletePost = (post, index) => {
+    const user_id = storage.get("user_id");
+    let adminUrlSuffix = "";
+    if(post.user_id !== user_id) {
+      adminUrlSuffix = "/admin"
+    }
+    postsService.delete(post.id, adminUrlSuffix);
     const posts_ = [...posts];
     posts_.splice(index, 1);
     setPosts(posts_);
@@ -93,7 +98,7 @@ function Home() {
               <LikeDislikeButtons post={post}/>
               { ( user_role === "admin" || post.user_id === user_id) && 
                 <div className="post-author-buttons">
-                  <button onClick={() => {deletePost(post.id, index)}}>Supprimer</button>
+                  <button onClick={() => {deletePost(post, index)}}>Supprimer</button>
                   <button onClick={() => {updatePost(post, index)}}>Modifier</button>
                 </div>
               }

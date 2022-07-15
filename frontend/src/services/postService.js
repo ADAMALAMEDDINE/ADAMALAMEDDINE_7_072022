@@ -57,10 +57,10 @@ const postService = {
         return result;
     },
 
-    async update(id, formData) {
+    async update(id, formData, adminSuffixUrl = "") {
         const { token } = storage.getAll();
 
-        const result = await axios.post(BACKEND_URL + "/posts/" + id, formData, {
+        const result = await axios.post(BACKEND_URL + "/posts/" + id + adminSuffixUrl, formData, {
             // You need to use `getHeaders()` in Node.js because Axios doesn't
             // automatically set the multipart form boundary in Node.
             headers: {
@@ -68,19 +68,10 @@ const postService = {
                 "Content-Type": "multipart/form-data"
             },
         });
-        // const result = await axios({
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`,
-        //         "Content-Type": "multipart/form-data"
-        //     },
-        //     method: 'post',
-        //     url: BACKEND_URL + "/posts/" + id,
-        //     data: formData
-        // });
         return result;
     },
 
-    async delete(id) {
+    async delete(id, adminSuffixUrl = "") {
 
         const { token } = storage.getAll()
         const result = await axios({
@@ -88,7 +79,7 @@ const postService = {
                 'Authorization': `Bearer ${token}`
             },
             method: 'delete',
-            url: BACKEND_URL + "/posts/" + id
+            url: BACKEND_URL + "/posts/" + id + adminSuffixUrl
         });
         return result;
     },

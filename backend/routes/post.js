@@ -1,11 +1,10 @@
 /***********************************/
 /*** Import des module nécessaires */
 const express = require('express');
-const checkTokenMiddleware = require('../jsonwebtoken/check');
+const authCheck = require('../middleware/auth');
 const postCtrl = require('../controllers/post');
 const multer = require('../middleware/multer-config');
-// let multer = require('multer');
-// let upload = multer();
+
 /***************************************/
 /*** Récupération du routeur d'express */
 let router = express.Router()
@@ -21,20 +20,24 @@ router.use( (req, res, next) => {
 /**************************************/
 /*** Routage de la ressource Post */
 
-router.get('', postCtrl.getAllPosts)
+router.get('', authCheck, postCtrl.getAllPosts)
 
-router.get('/get-one/:id', postCtrl.getOne)
+router.get('/get-one/:id', authCheck, postCtrl.getOne)
 
-router.get('/get-content/:id', postCtrl.getContent)
+router.get('/get-content/:id', authCheck, postCtrl.getContent)
 
-router.put('/create', checkTokenMiddleware, multer, postCtrl.addPost)
+router.put('/create', authCheck, multer, postCtrl.addPost)
 
-router.post('/:id', checkTokenMiddleware, multer, postCtrl.updatePost)
+router.post('/:id', authCheck, multer, postCtrl.updatePost)
 
-router.post('/untrash/:id', checkTokenMiddleware, postCtrl.untrashPost)
+router.post('/:id/admin', (req, res, next) => {authCheck(req, res, next, true)}, multer, postCtrl.updatePost)
+
+// router.post('/untrash/:id', authCheck, postCtrl.untrashPost)
     
-router.delete('/trash/:id', checkTokenMiddleware, postCtrl.trashPost)
+// router.delete('/trash/:id', authCheck, postCtrl.trashPost)
 
-router.delete('/:id', checkTokenMiddleware, postCtrl.deletePost)
+router.delete('/:id', authCheck, postCtrl.deletePost)
+
+router.delete('/:id/admin', (req, res, next) => {authCheck(req, res, next, true)}, postCtrl.deletePost)
 
 module.exports = router

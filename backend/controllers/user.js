@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
-const User = require('../models/user')
-const router = require('../routes/user')
+const DB = require('../db.config');
+const User = DB.User;
 
 exports.getAllUsers = (req, res) => {
     User.findAll()
@@ -60,31 +60,41 @@ exports.addUser = (req, res) => {
 
         })
 
-        .catch(err => res.status(500).json({ message: "Database Error", error: err }))
+        .catch(err => res.status(500).json({ message: "Database Error", error: err }));
 }
 
-exports.updateUser = (req, res) => {
-    let userId = parseInt(req.params.id)
+exports.updateUser = async (req, res) => {
+    let userId = parseInt(req.params.id);
+    const { actualPassword, newPassword, email, nickname } = req.body;
 
     //verification si le champ id est présent et cohérent
-    if (!userId) {
-        return res.status(400).json({ message: "Missing paramater" })
+    if (!userId || !actualPassword) {
+        return res.status(400).json({ message: "Missing paramater" });
+    }
+    const user = await User.findOne({ where: { id: userId }, raw: true });
+              
+    if (!user) {
+        return res.status(404).json({ message: `User not found !` });
     }
 
-    //recherche de l'utilisateur
-    User.findOne({ where: { id: userId }, raw: true })
-        .then(user => {
-            //verification si 'utilisateur existe
-            if (user === null) {
-                return res.status(400).json({ message: "this user does not exist" })
-            }
+    let passwordsMatch = await User.checkPassword(actualPassword, user.password)
+    if(!passwordsMatch){
+        return res.status(403).json({ message: 'Wrong password'});
+    }
+    
+    // hashage du mot de passe utilisateur
+    if(newPassword) {
+        user.password = await bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_SALT_ROUND));
+        // user.password = newPassword;
+    }   
 
-            //mise à jour de l'utilisateur
-            User.update(req.body, { where: { id: userId } })
-                .then(user => res.json({ message: "User Uploaded" }))
-                .catch(err => res.status(500).json({ message: "Database error", error: err }))
-                .catch(err => res.status(500).json({ message: "Database Error", error: err }))
-        })
+    user.email = email;
+    user.nickname = nickname;
+
+    //mise à jour de l'utilisateur
+    User.update(user, { where: { id: userId } })
+        .then(() => res.status(200).json({ message: "User Uploaded" }))
+        .catch(err => res.status(500).json({ message: "Database error", error: err }));    
 }
 
 exports.untrashUser = (req, res) => {

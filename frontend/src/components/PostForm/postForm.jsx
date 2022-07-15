@@ -2,6 +2,7 @@ import logo from "../../images/icon-left-font.png";
 import './PostForm.css';
 import { useState, useEffect } from "react" //fonction qui permet de recuperer des "state"
 import postService from '../../services/postService';
+import StorageService from '../../services/storage';
 
 
 function PostForm({post, closeSelf, postWasUpdated, postWasCreated}) {
@@ -52,15 +53,24 @@ function PostForm({post, closeSelf, postWasUpdated, postWasCreated}) {
       })
   }
 
-  const updatePost = () => {
+  const updatePost = async () => {
     const fd = initFormData();
-    postService.update(post.id, fd)
-      .then(res => {
-        console.log(res);
-        postWasUpdated({...postFormData, index: post.index});
-      }).catch(err => {
-        console.log(err);
-      })
+    let res;
+    const { user_id, user_role } = StorageService.getAll();
+    try {
+      if(post.user_id === user_id) {
+        res = await postService.update(post.id, fd);  
+      } else if (user_role === "admin") {
+        res = await postService.update(post.id, fd, "/admin"); 
+      } else {
+        throw new Error("Vous n'avez pas les droits nécesaires pour modifier ce post !");
+      }
+      console.log(res);
+      postWasUpdated({...postFormData, index: post.index});
+    } catch(err) {
+      console.log(err);
+      alert(err);
+    }
   }
 
   const handleSubmit = e => {

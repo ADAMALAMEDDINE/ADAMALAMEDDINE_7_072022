@@ -21,7 +21,6 @@ exports.getAllPosts = (req, res) => {
     }).then(posts => {
         res.status(200).json(posts);
     }).catch(err => {
-        console.log(err);
         res.status(500).json({ message: 'Database Error', error: err });
     })
 }
