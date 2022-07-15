@@ -3,8 +3,8 @@
 
 ## Basic configurationn before starting ...
 
-### Create new mysql db
-
+### Create new mysql db with the name of your choice
+(tables and relations in this db, will be automaticly created following the model definitions)
 ### At the project root :
 ```
 touch .env
@@ -37,3 +37,4 @@ npm run start
 ```
 npm run dev
 ```
+
