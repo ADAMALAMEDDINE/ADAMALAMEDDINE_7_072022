@@ -44,10 +44,10 @@ module.exports = (sequelize) => {
         }
     }, { paranoid: true })           // Ici pour faire du softDelete
     
-    User.beforeCreate( async (user, options) => {
+    /*User.beforeCreate( async (user, options) => {
         let hash = await bcrypt.hash(user.password, parseInt(process.env.BCRYPT_SALT_ROUND))
         user.password = hash
-    })
+    })*/
     
     User.checkPassword = async (password, originel) => {
         return await bcrypt.compare(password, originel)

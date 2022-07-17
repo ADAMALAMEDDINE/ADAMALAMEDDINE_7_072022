@@ -2,6 +2,7 @@
 /*** Import des module nécessaires */
 const jwt = require('jsonwebtoken')
 
+const bcrypt = require('bcrypt')
 const DB = require('../db.config')
 const User = DB.User
 
@@ -25,7 +26,7 @@ exports.login = async (req, res) => {
 
         // Vérification du mot de passe
         //let test = await bcrypt.compare(password, user.password)  
-        let test = await User.checkPassword(password, user.password)
+        let test = await bcrypt.compare(password, user.password)
         if(!test){
             return res.status(403).json({ message: 'Wrong password'})
         }
@@ -49,7 +50,7 @@ exports.login = async (req, res) => {
 }
 
 exports.signup = async (req, res) => {
-    const { firstname, lastname, nickname, email, password } = req.body;
+    let { firstname, lastname, nickname, email, password } = req.body;
     // Validation des données reçues
     if(!firstname || !lastname || !nickname || !email || !password){
         return res.status(400).json({ message: 'Missing user informations'})
@@ -65,7 +66,7 @@ exports.signup = async (req, res) => {
 
     try{
         //création du User
-
+console.log({firstname, lastname, nickname, email, password, role});
        const user = await User.create({ firstname, lastname, nickname, email, password, role })
         return res.json({ message: 'User Created', data: user })
     }catch(err){
