@@ -13,10 +13,12 @@ exports.getAllPosts = (req, res) => {
         paranoid: false,
         order: [['createdAt', 'DESC']],
         include: [{ model: User, attributes: ["nickname"] }],
-        attributes: {include : [
-            DB.sequelize.literal("SUBSTRING(post.content, 1, 150) as content"),
-            "title", "likes", "dislikes", "imageUrl", "updatedAt", "user_id", "id"
-        ]}
+        attributes: {
+            include: [
+                DB.sequelize.literal("SUBSTRING(post.content, 1, 150) as content"),
+                "title", "likes", "dislikes", "imageUrl", "updatedAt", "user_id", "id"
+            ]
+        }
 
     }).then(posts => {
         res.status(200).json(posts);
@@ -35,7 +37,8 @@ exports.getOne = async (req, res) => {
 
     try {
         // Récupération du post
-        let post = await Post.findOne({ where: { id: postId }, 
+        let post = await Post.findOne({
+            where: { id: postId },
             include: [{ model: User, attributes: ["nickname"] }],
             attributes: [
                 "id", "title", "content", "likes", "dislikes", "imageUrl", "updatedAt"
@@ -83,7 +86,7 @@ exports.addPost = async (req, res) => {
 
     // Validation des données reçues
     if (!user_id || !title || !content) {
-        if(req.file && req.file.filename) {
+        if (req.file && req.file.filename) {
             fs.unlink(`images/${req.file.filename}`, async () => {
                 return res.status(400).json({ message: 'Missing Data' });
             });
@@ -95,7 +98,7 @@ exports.addPost = async (req, res) => {
     try {
         // Céation du post
         const dataToPost = { title, content, user_id };
-        if(req.file && req.file.filename) {
+        if (req.file && req.file.filename) {
             dataToPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         }
         const post = await Post.create(dataToPost);
@@ -123,27 +126,35 @@ exports.updatePost = async (req, res) => {
 
         const dataToPost = { title, content };
 
-        if(req.file && req.file.filename) {
+        if (req.file && req.file.filename) {
             dataToPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
         }
-        
-        if(oldImageUrl) {
-            if(!dataToPost.imageUrl) dataToPost.imageUrl = "";
-            const filename = oldImageUrl.split('/images/')[1];
+
+        if (oldImageUrl) {
+            if (!dataToPost.imageUrl) dataToPost.imageUrl = "";
+            const filename = post.imageUrl.split('/images/')[1];
             //supprimer le fichier ayant ce filename
-            fs.unlink(`images/${filename}`, async () => {
-                await Post.update(dataToPost, { where: { id: postId } });
-                return res.json({ message: 'post Updated' });
+            console.log(filename);
+            fs.unlink(`images/${filename}`, (err) => {
+                Post.update(dataToPost, { where: { id: postId } }).then(updated => {
+                    return res.status(200).json({ message: 'post Updated' });
+                }).catch(err2 => {
+                    console.log(err2)
+                    return res.status(500).json({ message: 'Database Error', error: err2 })
+                })
             });
-        } else if(req.file && req.file.filename) {
+        } else if (req.file && req.file.filename) {
             dataToPost.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-        } 
-        
-        await Post.update(dataToPost, { where: { id: postId } });
-        return res.json({ message: 'post Updated' });
-        
+            await Post.update(dataToPost, { where: { id: postId } });
+            return res.status(200).json({ message: 'post Updated' });
+        } else {
+            await Post.update(dataToPost, { where: { id: postId } });
+            return res.status(200).json({ message: 'post Updated' });
+        }
+
+
         // Mise à jour du post
-        
+
     } catch (err) {
         return res.status(500).json({ message: 'Database Error', error: err })
     }
@@ -186,19 +197,19 @@ exports.deletePost = async (req, res) => {
 
     const postToDelete = await Post.findOne({ where: { id: postId } });
     // Suppression du post
-    if(postToDelete.imageUrl) {
+    if (postToDelete.imageUrl) {
         fs.unlink(`images${postToDelete.imageUrl.split('images')[1]}`, async () => {
-            destroyPost(res, postId);   
+            destroyPost(res, postId);
         });
     } else {
         destroyPost(res, postId);
-    } 
+    }
 }
 
 const destroyPost = (res, postId) => {
     Post.destroy({ where: { id: postId }, force: true })
-    .then(result => {
-        return res.status(204).json({});
-    })
-    .catch(err => res.status(500).json({ message: 'Database Error', error: err }))
+        .then(result => {
+            return res.status(204).json({});
+        })
+        .catch(err => res.status(500).json({ message: 'Database Error', error: err }))
 }
