@@ -30,6 +30,7 @@ function App() {
         login(signUpFormData);
       }).catch(err => {
         console.log(err);
+        alert(err.response.data.message)
       })
   }
 
@@ -40,6 +41,7 @@ function App() {
       navigate("/accueil");
     }).catch(err => {
       console.log(err);
+      alert(err.response.data.message)
     });
   }
   const onlogin = (e) => {
