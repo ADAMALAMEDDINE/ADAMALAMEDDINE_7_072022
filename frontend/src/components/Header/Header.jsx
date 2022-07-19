@@ -7,12 +7,16 @@ import storage from "../../services/storage.js";
 import userService from '../../services/userService';
 import PostForm from '../PostForm/postForm';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { isVisible } from '@testing-library/user-event/dist/utils';
 
 
 function Header({postWasCreated}) {
 
     const navigate = useNavigate();
 
+    const [menuIsVisible, setMenuIsVisible] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
     const [displayPostForm, setDisplayPostForm] = useState(false);
 
@@ -38,12 +42,21 @@ function Header({postWasCreated}) {
         setDisplayPostForm(false);
     }
 
+    
+
     return (
         <div className="Header">
             <header>
                 <img src={logo} alt='logo Groupomania' />
+                <button onClick={()=> {setMenuIsVisible(!menuIsVisible)}} className='responsive-burger-menu-btn'>
+                    {   menuIsVisible ?
+                        <FontAwesomeIcon icon={faXmark} /> :
+                        <FontAwesomeIcon icon={faBars} />
+                    }
+                    
+                </button>
                 <nav>
-                    <ul>
+                    <ul className={menuIsVisible ? "responsive-header-menu-is-visible" : ""}>
                         <li className="header-nav-menu-item">
                             <Link to="/accueil">Accueil</Link>
                         </li>

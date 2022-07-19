@@ -30,8 +30,8 @@ function App() {
         login(signUpFormData);
       }).catch(err => {
         console.log(err);
-        alert(err.response.data.message)
-      })
+        alert(err.response.data.message);
+      });
   }
 
   const login = (userEmailAndPassword) => {
@@ -41,7 +41,7 @@ function App() {
       navigate("/accueil");
     }).catch(err => {
       console.log(err);
-      alert(err.response.data.message)
+      alert(err.response.data.message);
     });
   }
   const onlogin = (e) => {

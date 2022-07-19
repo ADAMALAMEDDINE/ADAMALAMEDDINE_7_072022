@@ -30,24 +30,19 @@ module.exports = (sequelize) => {
         },
         email:{
             type: DataTypes.STRING,
+            unique: true,
             validate:{
-                isEmail: true        // Ici une validation de données
+                isEmail: true,        // Ici une validation de données
             }
         },
         password:{
-            type: DataTypes.STRING(64),
-            is: /^[0-9a-f]{64}$/i    // Ici une contrainte
+            type: DataTypes.STRING(64)
         },
         role: {
             type: DataTypes.STRING(10),
             defaultValue: 'user',
         }
     }, { paranoid: true })           // Ici pour faire du softDelete
-    
-    /*User.beforeCreate( async (user, options) => {
-        let hash = await bcrypt.hash(user.password, parseInt(process.env.BCRYPT_SALT_ROUND))
-        user.password = hash
-    })*/
     
     User.checkPassword = async (password, originel) => {
         return await bcrypt.compare(password, originel)

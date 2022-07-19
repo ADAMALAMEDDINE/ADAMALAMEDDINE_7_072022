@@ -14,7 +14,7 @@ exports.addRemove = async (req, res) => {
     try{
         const alreadyLiked = await Like.findOne({ where : { user_id, post_id } });
         if(alreadyLiked) {
-            return res.status(400).json({ error: "Vous ne pouvez pas disliker un post que vous avez déjà liké !"});
+            return res.status(400).json({ message: "Vous ne pouvez pas disliker un post que vous avez déjà liké !"});
         }
 ;
         const alreadyDisliked = await Dislike.findOne({ where: { user_id, post_id }, attributes: ['id'] });
@@ -35,6 +35,6 @@ exports.addRemove = async (req, res) => {
         
         return res.status(200).json({ message, code });
     }catch(err){
-        return res.status(500).json({ message: 'Database Error', error: err })
+        return res.status(500).json({ message: 'Une erreur inconnue est survenue', error: err })
     }
 }

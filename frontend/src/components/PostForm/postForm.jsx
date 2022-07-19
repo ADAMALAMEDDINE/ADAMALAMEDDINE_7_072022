@@ -49,7 +49,7 @@ function PostForm({post, closeSelf, postWasUpdated, postWasCreated}) {
         console.log(res);
         postWasCreated({...res.data.data, User: {nickname: "moi"}});
       }).catch(err => {
-        console.log(err);
+        alert(err.response.data.message);
       })
   }
 
@@ -69,7 +69,7 @@ function PostForm({post, closeSelf, postWasUpdated, postWasCreated}) {
       postWasUpdated({...postFormData, index: post.index});
     } catch(err) {
       console.log(err);
-      alert(err);
+      alert(err.response.data.message);
     }
   }
 

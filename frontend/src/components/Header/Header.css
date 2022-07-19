@@ -33,3 +33,39 @@ header li:hover a {
     transition: color 0.3s ease-in-out;
     color: white;
 }
+
+.responsive-burger-menu-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 3;
+    display: none;
+}
+
+@media all and (max-width: 767px) {
+    .responsive-burger-menu-btn {
+        display: block;
+    }
+
+   
+
+    header ul {
+        flex-direction: column;
+        position: absolute;
+        right: -100%;
+        width: 100%;
+        top: 0;
+        z-index: 2;
+    }
+
+    header ul.responsive-header-menu-is-visible {
+        transition: 0.3s right ease-in-out;
+        right: 0;
+    }
+
+    header li {
+        justify-content: center;
+        background: white;
+        box-shadow: 1px 1px 4px grey;
+    }
+}

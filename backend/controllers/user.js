@@ -4,8 +4,8 @@ const User = DB.User;
 
 exports.getAllUsers = (req, res) => {
     User.findAll()
-    .then(users => res.json({ data: users}))
-    .catch(err => res.status(500).json({ message: 'Database Error', error: err}))
+    .then(users => res.status(200).json({ data: users}))
+    .catch(err => res.status(500).json({ message: 'Une erreur inconnue est survenue', error: err}))
 }
 
 exports.getUser = (req, res) => {
@@ -13,7 +13,7 @@ exports.getUser = (req, res) => {
 
     //verification si le champ id est présent et cohérent
     if (userId) {
-        return res.json(400)({ message: "Missing parameter" })
+        return res.status(400).json({ message: "Information(s) manquante(s)" })
     }
 
     //recuperation de l'utilisateur
@@ -24,8 +24,8 @@ exports.getUser = (req, res) => {
             }
 
             //utilisateur trouvé
-            return res.json({ data: user })
-                .catch(err => res.status(500).json({ message: "Database Error", error: err }))
+            return res.status(200).json({ data: user })
+                .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err }))
         })
 }
 
@@ -41,7 +41,7 @@ exports.addUser = (req, res) => {
         .then(user => {
             //verification si l'utilisateur existe deja
             if (user !== null) {
-                return res.status(400).json({ message: `the user ${nom} already exists` })
+                return res.status(400).json({ message: `L'utilisateur ${nom} existe déjà !` })
             }
             // hashage du mot de passe utilisateur
             bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
@@ -51,16 +51,16 @@ exports.addUser = (req, res) => {
 
                     //creation de l'utilisateur
                     User.create(req.body)
-                        .then(user => res.json({ message: "User created", data: user }))
-                        .catch(err => res.status(500).json({ message: "Database Error", error: err }))
+                        .then(user => res.status(200).json({ message: "User created", data: user }))
+                        .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err }))
 
                 })
-                .catch(err => res.status(500).json({ message: "Hash process error", error: err }))
+                .catch(err => res.status(500).json({ message: "erreur lors du hashage du mot de passe", error: err }))
 
 
         })
 
-        .catch(err => res.status(500).json({ message: "Database Error", error: err }));
+        .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err }));
 }
 
 exports.updateUser = async (req, res) => {
@@ -69,17 +69,17 @@ exports.updateUser = async (req, res) => {
 
     //verification si le champ id est présent et cohérent
     if (!userId || !actualPassword) {
-        return res.status(400).json({ message: "Missing paramater" });
+        return res.status(400).json({ message: "Information(s) manquante(s)" });
     }
     const user = await User.findOne({ where: { id: userId }, raw: true });
               
     if (!user) {
-        return res.status(404).json({ message: `User not found !` });
+        return res.status(404).json({ message: `Utilisateur non trouvé !` });
     }
 
     let passwordsMatch = await User.checkPassword(actualPassword, user.password)
     if(!passwordsMatch){
-        return res.status(403).json({ message: 'Wrong password'});
+        return res.status(403).json({ message: 'Mauvais mot de passe'});
     }
     
     // hashage du mot de passe utilisateur
@@ -93,18 +93,18 @@ exports.updateUser = async (req, res) => {
 
     //mise à jour de l'utilisateur
     User.update(user, { where: { id: userId } })
-        .then(() => res.status(200).json({ message: "User Uploaded" }))
-        .catch(err => res.status(500).json({ message: "Database error", error: err }));    
+        .then(() => res.status(200).json({ message: "Utilisateur modifié" }))
+        .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err }));    
 }
 
 exports.untrashUser = (req, res) => {
     let userId = parseInt(req.params.id)
     if(!userId) {
-        return res.status(400).json({ message: "missing parameter"})
+        return res.status(400).json({ message: "Information(s) manquante(s)"})
     }
     User.restore({ where: {id:userId}})
     .then(() => res.status(204).json({}))
-    .catch(err => res.status(500).json({ message: "Database Error", error: err}))
+    .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err}))
 }
 
 exports.trashUser = (req, res) => {
@@ -112,13 +112,13 @@ exports.trashUser = (req, res) => {
 
     //verification si le champ id est présent et cohérent
     if (!userId) {
-        return res.status(400).json({ message: "Missing paramater" })
+        return res.status(400).json({ message: "Information(s) manquante(s)" })
     }
 
     //suppression de l'utilisateur
     User.destroy({ where: { id: userId } })
         .then(() => res.status(204).json({}))
-        .catch(err => res.status(500).json({ message: "Database Error", error: err }))
+        .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err }))
 }
 
 exports.deleteUser = (req, res) => {
@@ -126,11 +126,11 @@ exports.deleteUser = (req, res) => {
 
     //verification si le champ id est présent et cohérent
     if (!userId) {
-        return res.status(400).json({ message: "Missing paramater" })
+        return res.status(400).json({ message: "Information(s) manquante(s)" })
     }
 
     //suppression de l'utilisateur
     User.destroy({ where: { id: userId }, force: true })
         .then(() => res.status(204).json({}))
-        .catch(err => res.status(500).json({ message: "Database Error", error: err }))
+        .catch(err => res.status(500).json({ message: "Une erreur inconnue est survenue", error: err }))
 }

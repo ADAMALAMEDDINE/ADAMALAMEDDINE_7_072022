@@ -25,7 +25,7 @@ function LikeDislikeButtons({ post }) {
       }
       setLikes(likes_);
     }).catch(err => {
-      alert(JSON.parse(err.request.response).error);
+      alert(err.response.data.message);
     });
   }
 
@@ -39,7 +39,7 @@ function LikeDislikeButtons({ post }) {
       }
       setDislikes(dislikes_);
     }).catch(err => {
-      alert(JSON.parse(err.request.response).error);
+      alert(err.response.data.message);
     });
   }
 
