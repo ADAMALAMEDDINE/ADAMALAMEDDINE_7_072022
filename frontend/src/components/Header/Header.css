@@ -43,6 +43,9 @@ header li:hover a {
 }
 
 @media all and (max-width: 767px) {
+    
+    
+    
     .responsive-burger-menu-btn {
         display: block;
     }
@@ -56,9 +59,11 @@ header li:hover a {
         width: 100%;
         top: 0;
         z-index: 2;
+        transform:  scale(0);
     }
 
     header ul.responsive-header-menu-is-visible {
+        transform: scale(1);
         transition: 0.3s right ease-in-out;
         right: 0;
     }
