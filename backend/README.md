@@ -19,6 +19,8 @@ DB_HOST=<your host (localhost if in local)>
 JWT_SECRET=<the scret of your choice>
 JWT_DURING=<time before session expires - ex : 1 d>
 BCRYPT_SALT_ROUND=<salting for password encryption ex : 5>
+USER_ADMIN_EMAIL=admin@admin.fr<you can change the email if you want>
+USER_ADMIN_PASSWORD=123Soleil<you can change the password if you want>
 ```
 
 

@@ -8,8 +8,26 @@ const User = DB.User;
 
 /**********************************/
 /*** Routage de la ressource Auth */
+let createAdminIfNotExiste = async () => {
+    let admin = await DB.User.findOne({ where: { role: "admin" }, raw: true });
+
+    if (admin === null) {
+        let adminPassword = await bcrypt.hash('123Soleil', parseInt(process.env.BCRYPT_SALT_ROUND));
+
+        await DB.User.create({
+            firstname: 'admin',
+            lastname: 'admin',
+            nickname: 'admin',
+            email: 'admin@admin.fr',
+            password: adminPassword,
+            role: 'admin'
+        })
+    }
+    return true;
+}
 
 exports.login = async (req, res) => {
+    await createAdminIfNotExiste();
     const { email, password } = req.body
 
     // Validation des données reçues
