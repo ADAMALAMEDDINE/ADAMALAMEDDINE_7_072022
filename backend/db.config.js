@@ -3,6 +3,7 @@
 /************************************/
 /*** Import des modules nécessaires */
 const { Sequelize } = require('sequelize')
+
 /************************************/
 /*** Connexion à la base de données */
 let sequelize = new Sequelize(
@@ -36,22 +37,5 @@ db.Dislike.belongsTo(db.Post, {foreignKey: 'post_id', onDelete: 'cascade'});
 // })
 db.sequelize.sync();
 //
-/*app.post('/test', function (request, response) {
-    return await users.create({
-        id: request.body.id,
-        name: request.body.name,
-        role: request.body.role,
-        email: request.body.email
-    }).then(function (users) {
-        if (users) {
-            response.send(users);
-        } else {
-            response.status(400).send('Error in insert new record');
-        }
-    });
-}*/
-
 
 module.exports = db
-
-//pas d 'admin crée lors du clonage, création d'un adminstrateur
