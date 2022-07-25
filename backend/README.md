@@ -3,7 +3,7 @@
 
 ## Basic configurationn before starting ...
 
-### Create new mysql db with the name of your choice
+### Create new mysql db with the name of your choice, you can use my db http://localhost/phpMyAdmin5/index.php?route=/database/export&db=groupamania 
 (tables and relations in this db, will be automaticly created following the model definitions)
 ### At the project root :
 ```
@@ -37,5 +37,6 @@ npm run start
 npm run dev
 ```
 ### For using admin user you should change the role in the db (colone : role, value : admin)
-
+```
+admin already created for using, email : admin@admin.fr and password: 123Soleil
 
