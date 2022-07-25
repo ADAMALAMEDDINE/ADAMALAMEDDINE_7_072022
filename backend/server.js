@@ -8,8 +8,6 @@ require("dotenv").config();
 /*** Import de la connexion à la DB */
 let DB = require('./db.config');
 
-
-
 /*****************************/
 /*** Initialisation de l'API */
 const app = express();
