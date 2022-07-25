@@ -3,7 +3,11 @@
 
 ## Basic configurationn before starting ...
 
-### Create new mysql db with the name of your choice, you can use my db http://localhost/phpMyAdmin5/index.php?route=/database/export&db=groupamania 
+## Project setup
+```
+npm install
+```
+### Create my sql by importing the bdd groupamania.sql
 (tables and relations in this db, will be automaticly created following the model definitions)
 ### At the project root :
 ```
